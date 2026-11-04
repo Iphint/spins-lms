@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# OS and Editor files
+.DS_Store
+*/.DS_Store
+.idea/
+.vscode/
+*.sw?
+
+# Environment and secrets (preserve .env.example)
+.env
+.env.local
+.env.*.local
+*/.env
+*/.env.local
+*/.env.*.local
+!*.example
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite / Temporary cache
+.vite/
+*/.vite/
+.cache/
+*/.cache/
+
+# Local databases & Redis persistence
+*.sqlite
+*.sqlite3
+*.db
+redis_data/
+*/redis_data/

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <rect width="100%" height="100%" fill="#0f172a"/>
+  <rect x="50" y="50" width="700" height="300" rx="16" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="400" y="100" text-anchor="middle" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="22" font-weight="bold">Diagram Alir Logika Algoritma &amp; AI</text>
+  <text x="400" y="130" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14">SMP Negeri 5 Jakarta · Modul Coding &amp; AI</text>
+  
+  <!-- Step 1 -->
+  <rect x="90" y="180" width="160" height="80" rx="10" fill="#334155" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="170" y="215" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">1. Input Data</text>
+  <text x="170" y="240" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Array Angka / Teks</text>
+  
+  <!-- Arrow 1 -->
+  <path d="M 260 220 L 310 220" stroke="#38bdf8" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  
+  <!-- Step 2 -->
+  <rect x="320" y="180" width="160" height="80" rx="10" fill="#334155" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="400" y="215" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">2. Model Logic</text>
+  <text x="400" y="240" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Perulangan &amp; Seleksi</text>
+  
+  <!-- Arrow 2 -->
+  <path d="M 490 220 L 540 220" stroke="#38bdf8" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  
+  <!-- Step 3 -->
+  <rect x="550" y="180" width="160" height="80" rx="10" fill="#334155" stroke="#10b981" stroke-width="1.5"/>
+  <text x="630" y="215" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">3. Prediksi Output</text>
+  <text x="630" y="240" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Hasil Evaluasi</text>
+</svg>

@@ -1,0 +1,329 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id        String @id
+  name      String
+  email     String
+  phone     String
+  photo     String? @db.Text
+  school    String
+  schoolAddress String? @db.Text
+  subject   String
+  nip       String?
+  position  String
+  joinDate  String?
+  bio       String? @db.Text
+  user      User?
+  classes   Class[]
+}
+
+model User {
+  id        String   @id
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("teacher")
+  status    String   @default("active")
+  teacherId String?  @unique
+  studentId String?  @unique
+  createdAt String
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  student   Student? @relation(fields: [studentId], references: [id])
+}
+
+model AcademicYear {
+  id          String              @id
+  name        String
+  startDate   String
+  endDate     String
+  isActive    Boolean
+  semesters   Semester[]
+  enrollments StudentEnrollment[]
+}
+
+model Semester {
+  id               String   @id
+  academicYearId   String
+  name             String
+  number           Int
+  startDate        String
+  endDate          String
+  totalMeetings    Int
+  completedMeetings Int     @default(0)
+  progress         Float    @default(0)
+  status           String   @default("upcoming")
+  learningTargets  Int
+  completedTargets Int      @default(0)
+  academicYear     AcademicYear @relation(fields: [academicYearId], references: [id])
+  classes          Class[]
+  meetings         Meeting[]
+}
+
+model Class {
+  id                 String              @id
+  name               String
+  grade              Int
+  section            String
+  subject            String
+  studentCount       Int
+  room               String
+  schedule           String
+  attendanceRate     Float               @default(0)
+  worksheetCompletion Float              @default(0)
+  currentTopic       String?             @db.Text
+  nextTopic          String?             @db.Text
+  semesterProgress   Float               @default(0)
+  averageScore       Float               @default(0)
+  semesterId         String
+  teacherId          String?
+  semester           Semester            @relation(fields: [semesterId], references: [id])
+  teacher            Teacher?            @relation(fields: [teacherId], references: [id])
+  students           Student[]
+  enrollments        StudentEnrollment[]
+  meetings           Meeting[]
+  worksheets         Worksheet[]
+  scores             Score[]
+  attendances        Attendance[]
+  scheduleSlots      ScheduleSlot[]
+  materials          LearningMaterial[]
+  projects           StudentProject[]
+}
+
+model Student {
+  id                 String              @id
+  classId            String?
+  name               String
+  gender             String
+  nisn               String?
+  currentGrade       Int                 @default(7)
+  entryYear          String?
+  attendance         Float               @default(0)
+  worksheetCompletion Float              @default(0)
+  averageScore       Float               @default(0)
+  status             String              @default("active")
+  strengths          String?             @db.Text
+  weaknesses         String?             @db.Text
+  achievements       String?             @db.Text
+  parentName         String?
+  parentPhone        String?
+  class              Class?              @relation(fields: [classId], references: [id])
+  enrollments        StudentEnrollment[]
+  submissions        Submission[]
+  scores             Score[]
+  attendances        Attendance[]
+  projects           StudentProject[]
+  user               User?
+}
+
+model Meeting {
+  id                String   @id
+  classId           String
+  semesterId        String
+  materialId        String?
+  meetingNumber     Int
+  week              Int
+  date              String
+  subject           String
+  topic             String   @db.Text
+  learningObjective String?  @db.Text
+  teacherNotes      String?  @db.Text
+  hasWorksheet      Boolean  @default(false)
+  hasHomework       Boolean  @default(false)
+  status            String   @default("planned")
+  completion        Float    @default(0)
+  checkInPin        String?
+  class             Class    @relation(fields: [classId], references: [id])
+  semester          Semester @relation(fields: [semesterId], references: [id])
+  material          LearningMaterial? @relation(fields: [materialId], references: [id])
+  attendances       Attendance[]
+  journals          Journal[]
+}
+
+model Worksheet {
+  id            String   @id
+  classId       String
+  title         String
+  topic         String
+  assignedDate  String
+  dueDate       String
+  difficulty    String   @default("Sedang")
+  completion    Float    @default(0)
+  status        String   @default("upcoming")
+  totalQuestions Int     @default(10)
+  maxScore      Int      @default(100)
+  description   String?  @db.Text
+  fileUrl       String?  @db.Text
+  fileName      String?
+  fileSize      Int?
+  fileType      String?
+  hasCodeEditor Boolean  @default(false)
+  codeLanguage  String   @default("python")
+  starterCode   String?  @db.Text
+  solutionCode  String?  @db.Text
+  testCases     String?  @db.Text
+  class         Class    @relation(fields: [classId], references: [id])
+  submissions   Submission[]
+}
+
+model Submission {
+  id            String   @id
+  worksheetId   String
+  studentId     String
+  classId       String
+  status        String
+  score         Int      @default(0)
+  submittedDate String?
+  feedback      String?  @db.Text
+  submittedCode String?  @db.Text
+  codeOutput    String?  @db.Text
+  fileUrl       String?  @db.Text
+  fileName      String?
+  worksheet     Worksheet @relation(fields: [worksheetId], references: [id])
+  student       Student   @relation(fields: [studentId], references: [id])
+}
+
+model Score {
+  id             String  @id
+  studentId      String
+  classId        String
+  examType       String
+  date           String
+  score          Int
+  maxScore       Int     @default(100)
+  weight         Int     @default(10)
+  semesterNumber Int     @default(1)
+  student        Student @relation(fields: [studentId], references: [id])
+  class          Class   @relation(fields: [classId], references: [id])
+}
+
+model Attendance {
+  id        String @id
+  meetingId String
+  studentId String
+  classId   String
+  date      String
+  status    String   @default("present")
+  note      String?  @db.Text
+  meeting   Meeting  @relation(fields: [meetingId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id])
+  class     Class   @relation(fields: [classId], references: [id])
+}
+
+model ScheduleSlot {
+  id         String           @id
+  classId    String
+  day        String
+  startTime  String
+  endTime    String
+  room       String
+  materialId String?
+  class      Class            @relation(fields: [classId], references: [id])
+  material   LearningMaterial? @relation(fields: [materialId], references: [id])
+}
+
+model LearningMaterial {
+  id                String  @id
+  classId           String
+  orderNumber       Int
+  semesterNumber    Int     @default(1)
+  topic             String  @db.Text
+  description       String? @db.Text
+  learningObjective String? @db.Text
+  status            String  @default("upcoming")
+  content           String? @db.Text
+  keyPoints         String? @db.Text
+  references        String? @db.Text
+  fileUrl           String? @db.Text
+  fileName          String?
+  fileSize          Int?
+  fileType          String?
+  videoUrl          String? @db.Text
+  class             Class         @relation(fields: [classId], references: [id])
+  meetings          Meeting[]
+  scheduleSlots     ScheduleSlot[]
+}
+
+model Journal {
+  id                  String @id
+  meetingId           String
+  classId             String
+  date                String
+  topic               String @db.Text
+  summary             String @db.Text
+  wentWell            String @db.Text
+  problems            String @db.Text
+  studentsNeedAttention String? @db.Text
+  ideasForNext        String @db.Text
+  mood                String @default("good")
+  meeting             Meeting @relation(fields: [meetingId], references: [id])
+}
+
+model Activity {
+  id          String   @id
+  type        String
+  message     String   @db.Text
+  time        String
+  icon        String
+  date        String
+  teacherId   String?
+  teacherName String?
+}
+
+model CalendarEvent {
+  id      String  @id
+  title   String
+  date    String
+  type    String
+  classId String?
+  color   String
+}
+
+model StudentEnrollment {
+  id             String       @id
+  studentId      String
+  classId        String
+  academicYearId String
+  semesterId     String?
+  grade          Int          // 7, 8, 9, 10, 11, 12
+  status         String       @default("active") // "active", "promoted", "retained", "graduated", "transferred"
+  enrollmentDate String       // e.g. "2025-07-14"
+  completionDate String?
+  finalScore     Float?       @default(0)
+  attendanceRate Float?       @default(0)
+  notes          String?      @db.Text
+
+  student        Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class          Class        @relation(fields: [classId], references: [id], onDelete: Cascade)
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+
+  @@unique([studentId, classId])
+  @@index([studentId, academicYearId])
+  @@index([classId])
+}
+
+model StudentProject {
+  id          String   @id
+  studentId   String
+  classId     String
+  materialId  String?
+  title       String
+  language    String   @default("python")
+  code        String   @db.Text
+  codeOutput  String?  @db.Text
+  notes       String?  @db.Text
+  lastSaved   String
+  createdAt   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class       Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, materialId])
+  @@index([studentId])
+  @@index([classId])
+}
