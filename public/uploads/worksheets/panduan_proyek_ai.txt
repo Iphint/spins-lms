@@ -1,0 +1,19 @@
+LEMBAR KERJA PESERTA DIDIK (LKPD) - CODING & AI INTEGRATED
+SMP NEGERI 5 JAKARTA
+Tahun Ajaran 2025/2026 - Semester Ganjil
+
+Modul: Struktur Percabangan dan Perulangan dengan Python
+Guru Pembimbing: Ibu Sari Dewi Kusuma, S.Pd., M.Kom.
+
+PETUNJUK PENGERJAAN:
+1. Bacalah studi kasus algoritma penentuan kelulusan siswa dan kalkulasi faktorial.
+2. Lengkapi fungsi Python pada online code editor yang telah disediakan.
+3. Jalankan tombol 'Run Code' untuk memverifikasi keluaran pada console terminal.
+4. Klik tombol 'Uji Test Cases' untuk memastikan seluruh kondisi input-output terpenuhi.
+5. Tekan tombol 'Submit Work' sebelum tenggat waktu berakhir.
+
+KRITERIA PENILAIAN:
+- Kebenaran logika algoritma (40%)
+- Kerapian penulisan kode & indentasi (20%)
+- Kelulusan seluruh automated test cases (30%)
+- Efisiensi waktu eksekusi (10%)
